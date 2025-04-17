@@ -24,6 +24,6 @@ public class Empleado {
 
     //union con la tabla user
     @OneToOne
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 }

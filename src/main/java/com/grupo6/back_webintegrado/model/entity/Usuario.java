@@ -7,10 +7,10 @@ import java.util.Collection;
 
 @Entity
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table (name = "usuario")
+@Builder
 
 public class Usuario {
 
