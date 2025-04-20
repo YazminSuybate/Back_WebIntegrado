@@ -8,20 +8,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api")
 public class LocalController {
 
-    @PostMapping("/save")
-    ResponseEntity<String> registerLocal(@RequestBody Usuario usuario){
 
+    @PostMapping("/save")
+    ResponseEntity<String> createUser(@RequestBody Usuario usuario){
         String message = "Recurso Creado Exitosamente";
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
     @GetMapping("/get")
-    ResponseEntity<List<Usuario>> fingUsers(){
+    ResponseEntity<List<Usuario>> findUsers(){
         List<Usuario> localList = new ArrayList<>();
         for (long i = 1; i <= 1; i++) {
             Usuario usuario = new Usuario();
@@ -36,6 +37,5 @@ public class LocalController {
         }
         return ResponseEntity.ok(localList);
     }
-
 
 }

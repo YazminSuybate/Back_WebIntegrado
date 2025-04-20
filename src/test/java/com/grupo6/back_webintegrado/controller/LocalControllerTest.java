@@ -25,11 +25,11 @@ public class LocalControllerTest {
     void findAllUsers() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/get"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$" , Matchers.hasSize(1)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)));
     }
 
     @Test
-    void RegisterLocal() throws Exception {
+    void CreateUser() throws Exception {
         Usuario usuario = Usuario.builder()
                 .id(1L)
                 .nombre("Edu")
@@ -40,8 +40,8 @@ public class LocalControllerTest {
                 .build();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(usuario)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(usuario)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().string("Recurso Creado Exitosamente"));
     }
@@ -53,6 +53,4 @@ public class LocalControllerTest {
             throw new RuntimeException("Error al convertir a JSON: " + e.getMessage(), e);
         }
     }
-
-
 }
