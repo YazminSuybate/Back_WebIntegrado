@@ -2,6 +2,7 @@ package com.grupo6.back_webintegrado.repository;
 
 import com.grupo6.back_webintegrado.model.entity.Usuario;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -9,8 +10,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // si querés usar tu BD real de test
@@ -34,6 +37,7 @@ public class UserRepositoryTest {
     }
 
     @Test
+    @DisplayName("Test de crear usuario")
     void testSaveUser(){
         //given - dado o condición previa o configuración
         Usuario usuario1 = Usuario.builder()
@@ -52,6 +56,7 @@ public class UserRepositoryTest {
     }
 
     @Test
+    @DisplayName("Test de traer usuarios")
     void tesPullUsers(){
         //given
         Usuario usuario1 = Usuario.builder()
@@ -65,8 +70,19 @@ public class UserRepositoryTest {
         userRepository.save(usuario1);
         userRepository.save(usuario);
         //when
+        List<Usuario> listUsers = userRepository.findAll();
 
         //then
+        assertThat(listUsers).isNotNull();
+        assertThat(listUsers.size()).isEqualTo(2);
+
+    }
+
+    @Test
+    @DisplayName("Test para traer usuario por ID")
+    void testUserId(){
+        userRepository.save(usuario);
+
 
 
     }
