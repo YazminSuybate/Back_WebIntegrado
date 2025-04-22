@@ -36,7 +36,7 @@ public class UserServiceIMPL implements UserService {
     }
 
     @Override
-    public Usuario updateEmpleado(Usuario userUpdate) {
+    public Usuario updateUser(Usuario userUpdate) {
         return userRepository.save(userUpdate);
     }
 
