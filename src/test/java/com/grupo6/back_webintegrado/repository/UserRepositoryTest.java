@@ -11,13 +11,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // si querés usar tu BD real de test
-@EntityScan(basePackages = "com.grupo6.back_webintegrado") // ajustá el paquete si hace falta
+@EntityScan(basePackages = "com.grupo6.back_webintegrado")
 public class UserRepositoryTest {
 
     @Autowired
@@ -81,9 +81,52 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("Test para traer usuario por ID")
     void testUserId(){
+        //given
         userRepository.save(usuario);
 
+        //when
+        Usuario usuarioBD = userRepository.findById(usuario.getId()).get();
+
+        //then
+
+        assertThat(usuarioBD).isNotNull();
+
+    }
 
 
+    @Test
+    @DisplayName("Test para actualizar usuario")
+    void testUpdateUser(){
+        //given
+        userRepository.save(usuario);
+
+        //when
+        Usuario usuarioBD = userRepository.findById(usuario.getId()).get();
+        usuarioBD.setNombre("Lincolm");
+        usuarioBD.setApellido("Santino");
+        usuarioBD.setCorreo("tiburoncin@gmail.com");
+        usuarioBD.setPassword("123");
+
+        Usuario userNew = userRepository.save(usuarioBD);
+
+        //then
+        assertThat(userNew.getCorreo()).isEqualTo("tiburoncin@gmail.com");
+        assertThat(userNew.getNombre()).isEqualTo("Lincolm");
+
+    }
+
+    @Test
+    @DisplayName("Test para eliminar un usuario")
+    void testDeleteUser () {
+        //given
+        userRepository.save(usuario);
+
+        //when
+        userRepository.deleteById(usuario.getId());
+
+        Optional<Usuario> userOptional = userRepository.findById(usuario.getId());
+
+        //then
+        assertThat(userOptional).isEmpty();
     }
 }
