@@ -1,5 +1,6 @@
 package com.grupo6.back_webintegrado.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 import com.grupo6.back_webintegrado.model.entity.Usuario;
@@ -13,7 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,12 +51,28 @@ public class userServiceTest {
         given(userRepository.save(usuario)).willReturn(usuario);
 
         //when
-
+        Usuario userSave = userServiceIMPL.saveUser(usuario);
 
         //then
-
+        assertThat(userSave).isNotNull();
 
     }
 
+    @DisplayName("Test para listar a los empleados")
+    @Test
+    void testListUsers(){
+         Usuario usuario1 = Usuario.builder()
+                 .nombre("Alonso")
+                 .apellido("Valerio")
+                 .correo("Valerio@gmail.com")
+                 .password("1234")
+                 .roles(Collections.emptyList())
+                 .build();
+         given(userRepository.findAll()).willReturn(List.of(usuario, usuario1));
 
+         List<Usuario> usuario = userServiceIMPL.getAllUsers();
+
+         assertThat(usuario).isNotNull();
+         assertThat(usuario.size()).isEqualTo(2);
+    }
 }
