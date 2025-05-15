@@ -20,7 +20,7 @@ public class SesionesPsico {
 
     @ManyToOne
     @JoinColumn(name = "id_psicologo")
-    private Empleado empleado;
+    private Usuario empleado;
 
     @ManyToOne
     @JoinColumn(name = "id_victima")

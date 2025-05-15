@@ -21,7 +21,7 @@ public class AsesoriaLegal {
 
     @ManyToOne
     @JoinColumn(name = "id_defensor")
-    private Empleado empleado;
+    private Usuario empleado;
 
     @ManyToOne
     @JoinColumn(name = "id_victima")

@@ -36,7 +36,4 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id"))
     private Collection<Rol> roles;
 
-    //union para la tabla de empleados
-    @OneToOne(mappedBy = "usuario")
-    private Empleado empleado;
 }

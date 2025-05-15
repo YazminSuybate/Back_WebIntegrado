@@ -22,10 +22,6 @@ public class Seguimientos {
     @JoinColumn(name = "id_denuncias")
     private Denuncias denuncia;
 
-    @ManyToOne
-    @JoinColumn(name = "id_empleado")
-    private Empleado empleado;
-
     @Column(name = "fecha")
     private LocalDateTime fecha;
 
