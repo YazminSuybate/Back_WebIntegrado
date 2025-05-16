@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SeguimientoDTO {
+public class SeguimientoRegistroDTO {
     private long id;
     private LocalDateTime fecha;
     private String comentario;

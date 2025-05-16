@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AsesoriaLegalDTO {
+public class AsesoriaLegalRegistroDTO {
 
     private String empleado;
     private String usuario;
     private String fecha;
-    private String 
+    private String tema;
+    private String resumen;
 }

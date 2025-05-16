@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DiagnosticoPsicoDTO {
+public class DiagnosticoPsicoRegistroDTO {
     private long sesion;
     private String descripcion;
     private String recomendaciones;

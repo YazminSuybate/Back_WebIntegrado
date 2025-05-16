@@ -11,7 +11,6 @@ import java.util.Collection;
 @NoArgsConstructor
 @Table (name = "usuario")
 @Builder
-
 public class Usuario {
 
     @Id

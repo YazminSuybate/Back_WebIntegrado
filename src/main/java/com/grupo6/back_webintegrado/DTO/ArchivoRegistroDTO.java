@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArchivoDTO {
+public class ArchivoRegistroDTO {
     private String nombre_archivo;
     private String ruta;
     private String tipo;

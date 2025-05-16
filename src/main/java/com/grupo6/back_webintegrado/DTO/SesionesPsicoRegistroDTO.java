@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SesionesPsicoDTO {
+public class SesionesPsicoRegistroDTO {
     private long idPsicologo;
     private long idVictima;
     private LocalDateTime fecha;
