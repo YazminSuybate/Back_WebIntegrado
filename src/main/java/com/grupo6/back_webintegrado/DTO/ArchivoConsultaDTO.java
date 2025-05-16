@@ -1,4 +1,4 @@
 package com.grupo6.back_webintegrado.DTO;
 
-public class DiagnosticoPsicoDTO {
+public class ArchivoConsultaDTO {
 }
