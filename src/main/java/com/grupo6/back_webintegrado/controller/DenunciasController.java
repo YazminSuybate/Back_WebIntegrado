@@ -45,7 +45,7 @@ public class DenunciasController {
                     denunciaSave.setSeguimiento(denuncia.getSeguimiento());
                     denunciaSave.setUsuario(denuncia.getUsuario());
 
-                    Denuncias denunciaUpdate = denunciasService.saveDenuncia(denunciaSave);
+                    Denuncias denunciaUpdate = denunciasService.updateDenuncia(denunciaSave);
                     return new ResponseEntity<>(denunciaUpdate, HttpStatus.OK);
 
                 })

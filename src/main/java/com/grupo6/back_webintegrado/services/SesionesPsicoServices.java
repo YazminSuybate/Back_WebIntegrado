@@ -13,7 +13,7 @@ public interface SesionesPsicoServices {
 
     Optional<SesionesPsico> getSesionPsicoById(Long id);
 
-    SesionesPsico updateSesionesPsico(SesionesPsico sesionesPsicoUpdate);
+    SesionesPsico updateSesionesPsico(SesionesPsico sesionPsicoUpdate);
 
     void deleteSesionPsico(long id);
 
