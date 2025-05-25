@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.*;
 
@@ -41,12 +42,10 @@ public class UserEntity {
 
     // NUEVO: Relación muchos a muchos con la entidad de roles
     // Esto creará una tabla de unión llamada 'tbl_user_roles'
+
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "tbl_user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+    @JoinTable(name = "tbl_user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Builder.Default
     private Set<RoleEntity> roles = new HashSet<>();
 
     @CreationTimestamp
@@ -55,4 +54,8 @@ public class UserEntity {
 
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<DenunciaUsuario> denunciasAsignadas;
+
 }
