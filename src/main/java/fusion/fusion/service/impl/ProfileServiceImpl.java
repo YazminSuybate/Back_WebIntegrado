@@ -1,4 +1,4 @@
-package fusion.fusion.service;
+package fusion.fusion.service.impl;
 
 
 import fusion.fusion.entity.RoleEntity;
@@ -7,6 +7,7 @@ import fusion.fusion.io.ProfileRequest;
 import fusion.fusion.io.ProfileResponse;
 import fusion.fusion.repository.RoleRepository;
 import fusion.fusion.repository.UserRepository;
+import fusion.fusion.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
