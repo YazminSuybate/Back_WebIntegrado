@@ -2,6 +2,8 @@ package fusion.fusion.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,9 @@ public class Denuncia {
 
     @Column(name = "fecha_denuncia", nullable = false)
     private LocalDateTime fechaDenuncia;
+
+    @Column(name = "fecha_incidente")
+    private LocalDate fechaIncidente;
 
     @Column(name = "tipo_denuncia", length = 50, nullable = false)
     private String tipoDenuncia; // VIOLENCIA_DOMESTICA, ACOSO, OTRO
