@@ -40,12 +40,13 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/send-reset-otp", "/reset-password", "/logout")
+                        .requestMatchers("/login", "/register", "/send-r    eset-otp", "/reset-password", "/logout")
                         .permitAll()
                         // NUEVO: Ejemplos de rutas protegidas por roles
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/manager/**").hasRole("MANAGER")
+                        .requestMatchers("/psicologo/**").hasRole("PSYCHOLOGIST")
+                        .requestMatchers("/abogado/**").hasRole("LAWYER")
                         // Puedes añadir más reglas específicas según tus necesidades
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
