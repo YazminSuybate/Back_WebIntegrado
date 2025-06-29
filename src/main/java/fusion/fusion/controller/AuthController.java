@@ -104,6 +104,7 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
+        System.out.println("Usuario autenticado:");
 
         Map<String, Object> response = new HashMap<>();
         response.put("email", email);
