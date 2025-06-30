@@ -36,16 +36,16 @@ public class Denuncia {
     private String estado; // REGISTRADA, EN_PROCESO, RESUELTA, ARCHIVADA
 
     // Relación con archivos (si decides implementarla)
-    @Builder.Default
-    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Archivo> archivos = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AsesoriaLegal> asesoriasLegales = new ArrayList<>();
-
-    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<DenunciaUsuario> usuariosAsignados = new ArrayList<>();
+//    @Builder.Default
+//    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Archivo> archivos = new ArrayList<>();
+//
+//    @Builder.Default
+//    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<AsesoriaLegal> asesoriasLegales = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @Builder.Default
+//    private List<DenunciaUsuario> usuariosAsignados = new ArrayList<>();
 
 }
