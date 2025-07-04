@@ -68,7 +68,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .userId(UUID.randomUUID().toString())
                 .name(request.getNombre())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .isAccountVerified(false)
+                .isAccountVerified(true)
                 .resetOtpExpireAt(0L)
                 .verifyOtp(null)
                 .verifyOtpExpireAt(0L)
