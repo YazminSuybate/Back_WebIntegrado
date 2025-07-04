@@ -55,7 +55,8 @@ public class UserEntity {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
+    /*
     @OneToMany(mappedBy = "usuario")
     private List<DenunciaUsuario> denunciasAsignadas;
-
+    */
 }

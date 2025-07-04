@@ -33,6 +33,14 @@ public class UserController {
                       .orElse(ResponseEntity.notFound().build());
     }
 
+    // Obtener usuario por email
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserEntity> obtenerUsuarioPorId(@PathVariable String email) {
+        Optional<UserEntity> usuario = userService.obtenerUsuarioPorEmail(email);
+        return usuario.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     // Crear nuevo usuario
     @PostMapping
     public ResponseEntity<UserEntity> crearUsuario(@RequestBody UserEntity userEntity) {
