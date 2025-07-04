@@ -7,7 +7,9 @@ import fusion.fusion.entity.UserEntity;
 import fusion.fusion.io.DenunciaRequest;
 import fusion.fusion.service.DenunciaService;
 
+import fusion.fusion.service.DenunciaUsuarioService;
 import fusion.fusion.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,10 @@ import java.util.Optional;
 public class DenunciaController {
 
     private final DenunciaService denunciaService;
+    @Autowired
     private UserService userService;
+    @Autowired
+    private DenunciaUsuarioService denunciaUsuarioService;
 
     public DenunciaController(DenunciaService denunciaService) {
         this.denunciaService = denunciaService;
@@ -44,7 +49,7 @@ public class DenunciaController {
         denunciaUsuario.setUsuario(user.get());
         denunciaUsuario.setDenuncia(denuncia);
 
-
+        denunciaUsuarioService.CrearDenunciausuario(denunciaUsuario);
 
         return new ResponseEntity<>(denuncia, HttpStatus.CREATED);
     }
