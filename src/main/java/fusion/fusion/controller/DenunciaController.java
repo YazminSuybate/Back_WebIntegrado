@@ -40,7 +40,7 @@ public class DenunciaController {
         denuncia.setTipoDenuncia(request.getTipo());
         denuncia.setFechaIncidente(request.getFecha_incidente());
         denuncia.setFechaDenuncia(LocalDateTime.now());
-        denuncia.setEstado("ACTIVA");
+        denuncia.setEstado("activo");
 
         denunciaService.guardarDenuncia(denuncia);
         Optional<UserEntity> user = userService.obtenerUsuarioPorEmail(correo);
