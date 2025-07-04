@@ -2,28 +2,51 @@ package fusion.fusion.controller;
 
 
 import fusion.fusion.entity.Denuncia;
+import fusion.fusion.entity.DenunciaUsuario;
+import fusion.fusion.entity.UserEntity;
+import fusion.fusion.io.DenunciaRequest;
 import fusion.fusion.service.DenunciaService;
 
+import fusion.fusion.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/denuncias")
 public class DenunciaController {
 
     private final DenunciaService denunciaService;
+    private UserService userService;
 
     public DenunciaController(DenunciaService denunciaService) {
         this.denunciaService = denunciaService;
     }
 
-    @PostMapping
-    public ResponseEntity<Denuncia> crearDenuncia(@RequestBody Denuncia denuncia) {
-        Denuncia nuevaDenuncia = denunciaService.guardarDenuncia(denuncia);
-        return new ResponseEntity<>(nuevaDenuncia, HttpStatus.CREATED);
+    @PostMapping("/{correo}")
+    public ResponseEntity<Denuncia> crearDenuncia(@RequestBody DenunciaRequest request, @PathVariable String correo) {
+
+        Denuncia denuncia = new Denuncia();
+        denuncia.setDescripcion(request.getDescripcion());
+        denuncia.setTipoDenuncia(request.getTipo());
+        denuncia.setFechaIncidente(request.getFecha_incidente());
+        denuncia.setFechaDenuncia(LocalDateTime.now());
+        denuncia.setEstado("ACTIVA");
+
+        denunciaService.guardarDenuncia(denuncia);
+        Optional<UserEntity> user = userService.obtenerUsuarioPorEmail(correo);
+
+        DenunciaUsuario denunciaUsuario = new DenunciaUsuario();
+        denunciaUsuario.setUsuario(user.get());
+        denunciaUsuario.setDenuncia(denuncia);
+
+
+
+        return new ResponseEntity<>(denuncia, HttpStatus.CREATED);
     }
 
     @GetMapping
