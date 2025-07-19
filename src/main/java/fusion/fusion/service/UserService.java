@@ -19,4 +19,7 @@ public interface UserService {
     Optional<UserEntity> obtenerUsuarioPorEmail(String email);
 
     boolean existeUsuario(String email);
+
+    List<String> obtenerRolesPorUsuarioId(Long usuarioId);
+
 }

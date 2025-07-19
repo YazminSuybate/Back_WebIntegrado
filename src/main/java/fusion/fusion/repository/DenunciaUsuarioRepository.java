@@ -1,5 +1,6 @@
 package fusion.fusion.repository;
 
+import fusion.fusion.entity.Denuncia;
 import fusion.fusion.entity.DenunciaUsuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,11 @@ public interface DenunciaUsuarioRepository extends JpaRepository<DenunciaUsuario
     WHERE u.id = :usuarioId
 """)
     List<DenunciaUsuario> findByUsuarioId(@Param("usuarioId") Long usuarioId);
+
+    boolean existsByIdDenunciaIdAndIdUsuarioId(Long denunciaId, Long usuarioId);
+    List<DenunciaUsuario> findByDenunciaId(@Param("denunciaId") Long denunciaId);
+
+    @Query("SELECT du.denuncia FROM DenunciaUsuario du WHERE du.usuario.id = :usuarioId")
+    List<Denuncia> findDenunciasByUsuarioId(@Param("usuarioId") Long usuarioId);
+
 }

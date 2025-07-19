@@ -1,6 +1,7 @@
 package fusion.fusion.controller;
 
 
+import fusion.fusion.entity.Denuncia;
 import fusion.fusion.entity.DenunciaUsuario;
 import fusion.fusion.entity.UserEntity;
 import fusion.fusion.repository.UserRepository;
@@ -29,15 +30,21 @@ public class DenunciaUsuarioController {
 
     // ✅ Este endpoint devuelve las denuncias del usuario autenticado
     @GetMapping("/misdenuncias")
-    public List<DenunciaUsuario> obtenerMisDenuncias(@AuthenticationPrincipal UserDetails userDetails) {
-        // Obtener el email desde el JWT extraído por JwtRequestFilter
+    public List<Denuncia> obtenerMisDenuncias(@AuthenticationPrincipal UserDetails userDetails) {
         String email = userDetails.getUsername();
 
-        // Buscar el usuario autenticado por email
         UserEntity usuario = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Buscar y devolver las denuncias asociadas a este usuario
-        return service.ObtenerDenunciaPorUsuario(usuario.getId());
+        return service.obtenerDenunciasDelUsuario(usuario.getId());
     }
+
+
+
+
+
+
+
+
+
 }

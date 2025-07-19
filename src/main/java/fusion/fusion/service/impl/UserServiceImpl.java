@@ -63,4 +63,23 @@ public class UserServiceImpl implements UserService {
     public boolean existeUsuario(String email) {
         return userRepository.existsByEmail(email);
     }
+
+
+
+    @Override
+    public List<String> obtenerRolesPorUsuarioId(Long usuarioId) {
+        Optional<UserEntity> userOpt = userRepository.findById(usuarioId);
+
+        if (userOpt.isEmpty()) {
+            return List.of(); // o lanzar una excepción si prefieres
+        }
+
+        UserEntity user = userOpt.get();
+
+        return user.getRoles()
+                .stream()
+                .map(role -> role.getName())
+                .toList(); // Devuelve los nombres como "ADMIN", "USER", "LAWYER", etc.
+    }
+
 }

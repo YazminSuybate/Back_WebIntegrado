@@ -1,5 +1,6 @@
 package fusion.fusion.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,10 +20,12 @@ public class DenunciaUsuario {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("denunciaId")
     @JoinColumn(name = "denuncia_id")
+    @JsonIgnore
     private Denuncia denuncia;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("usuarioId")
     @JoinColumn(name = "usuario_id")
+    @JsonIgnore
     private UserEntity usuario;
 }

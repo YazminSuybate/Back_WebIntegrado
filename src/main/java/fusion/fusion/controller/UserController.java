@@ -1,8 +1,13 @@
 package fusion.fusion.controller;
 
+import fusion.fusion.entity.DenunciaUsuario;
+import fusion.fusion.entity.RoleEntity;
 import fusion.fusion.entity.UserEntity;
+import fusion.fusion.service.DenunciaUsuarioService;
 import fusion.fusion.service.UserService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +19,8 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    @Autowired
+    private DenunciaUsuarioService denunciaUsuarioService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -80,4 +87,15 @@ public class UserController {
         boolean existe = userService.existeUsuario(email);
         return ResponseEntity.ok(existe);
     }
+
+
+
+
+
+
+
+
+
+
+
 }
