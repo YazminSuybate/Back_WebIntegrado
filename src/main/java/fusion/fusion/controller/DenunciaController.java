@@ -161,12 +161,23 @@ public ResponseEntity<?> asignarDenunciaAAbogado(
 
 
 
-//OBTENER DENUNCIAS ACTIVAS OSEA SIN ASIGNAR A ABOGADOS
+//OBTENER DENUNCIAS ACTIVAS
     @GetMapping("/activas")
     public ResponseEntity<List<Denuncia>> obtenerDenunciasActivas() {
         List<Denuncia> denunciasActivas = denunciaService.obtenerDenunciasPorEstado("activo");
         return new ResponseEntity<>(denunciasActivas, HttpStatus.OK);
     }
+
+
+
+    //OBTENER DENUNCIAS aprobadas OSEA SIN ASIGNAR A ABOGADOS
+    @GetMapping("/aprobadas")
+    public ResponseEntity<List<Denuncia>> obtenerDenunciasAprobadas() {
+        List<Denuncia> denunciasActivas = denunciaService.obtenerDenunciasPorEstado("aprobada");
+        return new ResponseEntity<>(denunciasActivas, HttpStatus.OK);
+    }
+
+
 
 
 

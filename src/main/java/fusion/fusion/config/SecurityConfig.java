@@ -40,7 +40,7 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/send-r    eset-otp", "/reset-password", "/logout")
+                        .requestMatchers("/login", "/register", "/send-reset-otp", "/reset-password", "/logout","/api/seguimientos-asesoria/**","/api/**")
                         .permitAll()
                         // NUEVO: Ejemplos de rutas protegidas por roles
                         .requestMatchers("/admin/**").hasRole("ADMIN")

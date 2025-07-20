@@ -1,5 +1,6 @@
 package fusion.fusion.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_denuncias")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Denuncia {
 
     @Id

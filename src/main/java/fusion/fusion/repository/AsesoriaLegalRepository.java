@@ -15,4 +15,11 @@ public interface AsesoriaLegalRepository extends JpaRepository<AsesoriaLegal, Lo
 
     // Buscar por rango de fechas
     List<AsesoriaLegal> findByFechaAsesoriaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+
+
+
+    List<AsesoriaLegal> findByDenunciaId(Long denunciaId);
+    List<AsesoriaLegal> findByDenunciaIdAndEstado(Long denunciaId, String estado);
+
+
 }

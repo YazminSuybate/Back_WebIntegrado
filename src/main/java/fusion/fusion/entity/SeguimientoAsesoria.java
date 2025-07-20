@@ -1,5 +1,8 @@
 package fusion.fusion.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -10,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_seguimientos_asesoria")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class SeguimientoAsesoria {
 
     @Id
@@ -22,7 +26,8 @@ public class SeguimientoAsesoria {
     @Column(name = "fecha_seguimiento", nullable = false)
     private LocalDateTime fechaSeguimiento;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "asesoria_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AsesoriaLegal asesoria;
 }
