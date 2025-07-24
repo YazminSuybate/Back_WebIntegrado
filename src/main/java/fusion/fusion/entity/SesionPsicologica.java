@@ -31,7 +31,7 @@ public class SesionPsicologica {
     private Integer duracion; // En minutos
 
     @Column(name = "estado", length = 20, nullable = false)
-    private String estado; // PENDIENTE, EN_PROCESO, COMPLETADA, CANCELADA
+    private String estado; // SOLICITADA, PROGRAMADA, TERMINADA
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "denuncia_id")

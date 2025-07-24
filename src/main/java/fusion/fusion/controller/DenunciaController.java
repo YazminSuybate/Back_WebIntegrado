@@ -160,6 +160,60 @@ public ResponseEntity<?> asignarDenunciaAAbogado(
 }
 
 
+//metodo que relaciona al psicologo con la denuncia hecha por un usuario
+@PostMapping("/asignarPsico/{denunciaId}/{correoAbogado}")
+    public ResponseEntity<?> asignarDenunciaAPsico(@PathVariable Long denunciaId, @PathVariable String correoPsicologo) {
+
+        // 1. Obtener la denuncia
+        Optional<Denuncia> denunciaOpt = denunciaService.obtenerDenunciaPorId(denunciaId);
+        if (denunciaOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Denuncia no encontrada.");
+        }
+
+        Denuncia denuncia = denunciaOpt.get();
+
+        // 2. Obtener todos los usuarios relacionados a la denuncia
+        List<DenunciaUsuario> relacionados = denunciaUsuarioService.obtenerUsuariosPorDenuncia(denunciaId);
+
+        // 3. Verificar si alguno de los usuarios tiene el rol LAWYER
+        for (DenunciaUsuario du : relacionados) {
+            UserEntity usuario = du.getUsuario();
+            List<String> roles = userService.obtenerRolesPorUsuarioId(usuario.getId());
+            if (roles.contains("PSYCHOLOGIST")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("La denuncia ya ha sido asignada a un PSICOLOGO.");
+            }
+        }
+
+        // 4. Obtener el psicologo a asignar
+        Optional<UserEntity> psicoOpt = userService.obtenerUsuarioPorEmail(correoPsicologo);
+        if (psicoOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Psicologo no encontrado.");
+        }
+
+        UserEntity psicologo = psicoOpt.get();
+
+        // 5. Verificar que el usuario que se intenta asignar tenga el rol LAWYER
+        List<String> rolesPsico = userService.obtenerRolesPorUsuarioId(psicologo.getId());
+        if (!rolesPsico.contains("PSYCHOLOGIST")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("El usuario no tiene el rol de psicologo.");
+        }
+
+        // 6. Crear la relación denuncia-abogado
+        DenunciaUsuario relacion = new DenunciaUsuario();
+        relacion.setDenuncia(denuncia);
+        relacion.setUsuario(psicologo);
+        denunciaUsuarioService.CrearDenunciausuario(relacion);
+
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Psicologo asignado exitosamente.");
+    }
+
+
+
+
+
 
 //OBTENER DENUNCIAS ACTIVAS
     @GetMapping("/activas")
