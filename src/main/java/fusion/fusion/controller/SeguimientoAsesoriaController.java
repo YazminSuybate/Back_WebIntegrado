@@ -1,6 +1,5 @@
 package fusion.fusion.controller;
 
-
 import fusion.fusion.entity.AsesoriaLegal;
 import fusion.fusion.entity.SeguimientoAsesoria;
 import fusion.fusion.service.AsesoriaLegalService;
@@ -24,14 +23,12 @@ public class SeguimientoAsesoriaController {
     private final SeguimientoAsesoriaService seguimientoAsesoriaService;
     private final AsesoriaLegalService asesoriaLegalService;
 
-
     public SeguimientoAsesoriaController(
             SeguimientoAsesoriaService seguimientoAsesoriaService,
             AsesoriaLegalService asesoriaLegalService) {
         this.seguimientoAsesoriaService = seguimientoAsesoriaService;
         this.asesoriaLegalService = asesoriaLegalService;
     }
-
 
     @PostMapping
     public ResponseEntity<?> crearSeguimiento(@RequestBody SeguimientoAsesoriaDTO dto) {
@@ -55,18 +52,10 @@ public class SeguimientoAsesoriaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Seguimiento guardado correctamente"));
     }
 
-
-
-
-
     @PostMapping("/prueba")
     public String testPost() {
         return "Funciona POST";
     }
-
-
-
-
 
     @GetMapping
     public ResponseEntity<List<SeguimientoAsesoria>> obtenerTodosLosSeguimientos() {
@@ -82,11 +71,13 @@ public class SeguimientoAsesoriaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SeguimientoAsesoria> actualizarSeguimiento(@PathVariable Long id, @RequestBody SeguimientoAsesoria seguimientoAsesoria) {
+    public ResponseEntity<SeguimientoAsesoria> actualizarSeguimiento(@PathVariable Long id,
+            @RequestBody SeguimientoAsesoria seguimientoAsesoria) {
         return seguimientoAsesoriaService.obtenerSeguimientoPorId(id)
                 .map(seguimientoExistente -> {
                     seguimientoAsesoria.setId(id);
-                    SeguimientoAsesoria seguimientoActualizado = seguimientoAsesoriaService.guardarSeguimiento(seguimientoAsesoria);
+                    SeguimientoAsesoria seguimientoActualizado = seguimientoAsesoriaService
+                            .guardarSeguimiento(seguimientoAsesoria);
                     return new ResponseEntity<>(seguimientoActualizado, HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -104,7 +95,13 @@ public class SeguimientoAsesoriaController {
 
     @GetMapping("/asesoria/{asesoriaId}")
     public ResponseEntity<List<SeguimientoAsesoria>> obtenerSeguimientosPorAsesoria(@PathVariable Long asesoriaId) {
-        List<SeguimientoAsesoria> seguimientos = seguimientoAsesoriaService.obtenerSeguimientosPorAsesoriaId(asesoriaId);
+        List<SeguimientoAsesoria> seguimientos = seguimientoAsesoriaService
+                .obtenerSeguimientosPorAsesoriaId(asesoriaId);
         return new ResponseEntity<>(seguimientos, HttpStatus.OK);
+    }
+
+    @GetMapping("/denuncia/{denunciaId}")
+    public List<SeguimientoAsesoria> getSeguimientosPorDenuncia(@PathVariable Long denunciaId) {
+        return seguimientoAsesoriaService.obtenerSeguimientosPorDenunciaId(denunciaId);
     }
 }

@@ -1,13 +1,15 @@
 package fusion.fusion.service.impl;
 
-
+import fusion.fusion.entity.AsesoriaLegal;
 import fusion.fusion.entity.SeguimientoAsesoria;
+import fusion.fusion.repository.AsesoriaLegalRepository;
 import fusion.fusion.repository.SeguimientoAsesoriaRepository;
 import fusion.fusion.service.SeguimientoAsesoriaService;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +19,12 @@ public class SeguimientoAsesoriaServiceImpl implements SeguimientoAsesoriaServic
 
     private final SeguimientoAsesoriaRepository seguimientoAsesoriaRepository;
 
-    public SeguimientoAsesoriaServiceImpl(SeguimientoAsesoriaRepository seguimientoAsesoriaRepository) {
+    private final AsesoriaLegalRepository asesoriaLegalRepository;
+
+    public SeguimientoAsesoriaServiceImpl(SeguimientoAsesoriaRepository seguimientoAsesoriaRepository,
+            AsesoriaLegalRepository asesoriaLegalRepository) {
         this.seguimientoAsesoriaRepository = seguimientoAsesoriaRepository;
+        this.asesoriaLegalRepository = asesoriaLegalRepository;
     }
 
     @Override
@@ -47,5 +53,17 @@ public class SeguimientoAsesoriaServiceImpl implements SeguimientoAsesoriaServic
     @Transactional(readOnly = true)
     public List<SeguimientoAsesoria> obtenerSeguimientosPorAsesoriaId(Long asesoriaId) {
         return seguimientoAsesoriaRepository.findByAsesoriaId(asesoriaId);
+    }
+
+    @Override
+    public List<SeguimientoAsesoria> obtenerSeguimientosPorDenunciaId(Long denunciaId) {
+        List<AsesoriaLegal> asesorias = asesoriaLegalRepository.findByDenunciaId(denunciaId);
+        List<SeguimientoAsesoria> resultados = new ArrayList<>();
+
+        for (AsesoriaLegal asesoria : asesorias) {
+            resultados.addAll(seguimientoAsesoriaRepository.findByAsesoriaId(asesoria.getId()));
+        }
+
+        return resultados;
     }
 }
