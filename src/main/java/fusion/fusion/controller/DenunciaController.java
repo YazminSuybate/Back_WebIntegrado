@@ -8,6 +8,7 @@ import fusion.fusion.io.DenunciaRequest;
 import fusion.fusion.service.DenunciaService;
 
 import fusion.fusion.service.DenunciaUsuarioService;
+import fusion.fusion.service.EmailService;
 import fusion.fusion.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,8 @@ import java.util.*;
 public class DenunciaController {
 
     private final DenunciaService denunciaService;
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -99,7 +102,7 @@ public class DenunciaController {
         return new ResponseEntity<>(denuncias, HttpStatus.OK);
     }
 
-
+//ACA PONGAN UN CORREO
 //metodo que relaciona el abogado con la denuncia hecha por un usuario
 @PostMapping("/asignar/{denunciaId}/{correoAbogado}")
 public ResponseEntity<?> asignarDenunciaAAbogado(
@@ -149,17 +152,30 @@ public ResponseEntity<?> asignarDenunciaAAbogado(
     denunciaUsuarioService.CrearDenunciausuario(relacion);
 
 
-
-    // ✅ 4. Actualizar estado de la denuncia
+    // 7. Actualizar estado de la denuncia
     denuncia.setEstado("asignada"); // o "en_proceso", como desees
     denunciaService.guardarDenuncia(denuncia);
 
+    // 8. Buscar correo del usuario con rol USER relacionado a la denuncia
+    Optional<String> correoUsuario = relacionados.stream()
+            .map(DenunciaUsuario::getUsuario)
+            .filter(u -> userService.obtenerRolesPorUsuarioId(u.getId()).contains("USER"))
+            .map(UserEntity::getEmail)
+            .findFirst();
 
+    // 9. Enviar correo
+    emailService.sendEmail(
+            correoUsuario.get(),
+            "SAFEZONE: ABOGADO ASIGNADO",
+            "Le informamos que su denuncia ha sido asignada a un abogado para el respectivo seguimiento."
+                    + "\n ABOGADO: "+ abogado.getName()
+    );
 
     return ResponseEntity.status(HttpStatus.CREATED).body("Abogado asignado exitosamente.");
 }
 
 
+//ACA PONGAN UN CORREO PI
 //metodo que relaciona al psicologo con la denuncia hecha por un usuario
 @PostMapping("/asignarPsico/{denunciaId}/{correoPsicologo}")
     public ResponseEntity<?> asignarDenunciaAPsico(@PathVariable Long denunciaId, @PathVariable String correoPsicologo) {
@@ -200,11 +216,26 @@ public ResponseEntity<?> asignarDenunciaAAbogado(
                     .body("El usuario no tiene el rol de psicologo.");
         }
 
-        // 6. Crear la relación denuncia-abogado
+        // 6. Crear la relación denuncia-psicologo
         DenunciaUsuario relacion = new DenunciaUsuario();
         relacion.setDenuncia(denuncia);
         relacion.setUsuario(psicologo);
         denunciaUsuarioService.CrearDenunciausuario(relacion);
+
+        // 7. Buscar correo del usuario con rol USER relacionado a la denuncia
+        Optional<String> correoUsuario = relacionados.stream()
+            .map(DenunciaUsuario::getUsuario)
+            .filter(u -> userService.obtenerRolesPorUsuarioId(u.getId()).contains("USER"))
+            .map(UserEntity::getEmail)
+            .findFirst();
+
+        // 8. Enviar correo
+        emailService.sendEmail(
+            correoUsuario.get(),
+            "SAFEZONE: PSICÓLOGO ASIGNADO",
+            "Le informamos que su denuncia ha sido asignada a un psicólogo para el respectivo seguimiento."
+                    + "\n PSICOLOGO: "+ psicologo.getName()
+        );
 
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Psicologo asignado exitosamente.");

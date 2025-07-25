@@ -8,6 +8,7 @@ import fusion.fusion.entity.UserEntity;
 import fusion.fusion.service.AsesoriaLegalService;
 
 import fusion.fusion.service.DenunciaUsuarioService;
+import fusion.fusion.service.EmailService;
 import fusion.fusion.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,8 @@ import java.util.Optional;
 public class AsesoriaLegalController {
 
     private final AsesoriaLegalService asesoriaLegalService;
-
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private DenunciaUsuarioService denunciaUsuarioService;
 
@@ -105,7 +107,7 @@ public class AsesoriaLegalController {
 
 
 
-
+//ACA PONGAN UN CORREO
 //CREA LA SESORIA SOLO SI TIENE UN ABOGADO RELACIONADO
     @PostMapping("/crear-si-abogado")
     public ResponseEntity<?> crearAsesoriaSiTieneAbogado(@RequestBody Map<String, Object> datos) {
@@ -139,6 +141,20 @@ public class AsesoriaLegalController {
                     .build();
 
             AsesoriaLegal nuevaAsesoria = asesoriaLegalService.guardarAsesoria(asesoria);
+
+
+            // Obtener correo del usuario con rol USER
+            Optional<String> correoUsuario = usuariosRelacionados.stream()
+                    .filter(usuario -> usuario.getRoles().stream()
+                            .anyMatch(rol -> rol.getName().equalsIgnoreCase("USER")))
+                    .map(UserEntity::getEmail)
+                    .findFirst();
+
+            emailService.sendEmail(
+                    correoUsuario.get(),
+                    "SAFEZONE: ASESORÍA SOLICITADA",
+                    "Le informamos que ya se registró la solicitud para una asesoría legal relacionada a su denuncia."
+            );
 
             return new ResponseEntity<>(nuevaAsesoria, HttpStatus.CREATED);
 

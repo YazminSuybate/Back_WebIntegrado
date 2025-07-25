@@ -21,6 +21,8 @@ import java.util.Optional;
 public class SesionPsicologicaController {
 
     @Autowired
+    private EmailService emailService;
+    @Autowired
     private DenunciaService denunciaService;
     private final SesionPsicologicaService sesionPsicologicaService;
 
@@ -97,7 +99,8 @@ public class SesionPsicologicaController {
     }
 
 
-       @PostMapping("programar/{sesionId}")
+    //ACA PONGAN UN CORREO
+    @PostMapping("programar/{sesionId}")
     public ResponseEntity<SesionPsicologica> programarSesion(@PathVariable Long sesionId,@RequestBody SesionPrograRequest sesionRequest) {
 
         SesionPsicologica sesionPsicologica = sesionPsicologicaService.obtenerSesionPorId(sesionId).get();
@@ -106,6 +109,26 @@ public class SesionPsicologicaController {
         sesionPsicologica.setEstado("PROGRAMADA");
 
         sesionPsicologicaService.guardarSesion(sesionPsicologica);
+        // Obtener los usuarios relacionados a la denuncia
+        Long denunciaId = sesionPsicologica.getDenuncia().getId();
+        List<UserEntity> usuariosRelacionados = asesoriaLegalService.obtenerUsuariosPorDenuncia(denunciaId);
+
+        // Buscar el correo del usuario con rol USER
+        Optional<String> correoUsuario = usuariosRelacionados.stream()
+                .filter(usuario -> usuario.getRoles().stream()
+                        .anyMatch(rol -> rol.getName().equalsIgnoreCase("USER")))
+                .map(UserEntity::getEmail)
+                .findFirst();
+
+        emailService.sendEmail(
+                correoUsuario.get(),
+                "SAFEZONE: SESIÓN PROGRAMADA",
+                "Le informamos que ya se programó su sesión psicológica para su denuncia. " +
+                        "\nHORA: "+sesionRequest.getFecha()+"" +
+                        "\nDURACIÓN (Hrs): "+sesionRequest.getDuracion()
+        );
+
+
 
         return new ResponseEntity<>(sesionPsicologica, HttpStatus.CREATED);
     }
@@ -154,7 +177,7 @@ public class SesionPsicologicaController {
 
 
 
-
+//ACA PONGAN UN CORREO
     @PostMapping("/crear-si-psicologo")
     public ResponseEntity<?> crearSesionSiTienePsicologo(@RequestBody Map<String, Object> datos) {
         try {
@@ -188,6 +211,19 @@ public class SesionPsicologicaController {
                     .build();
 
             SesionPsicologica nuevaSesion = sesionPsicologicaService.guardarSesion(sesion);
+
+            // Obtener correo del usuario con rol USER
+            Optional<String> correoUsuario = usuariosRelacionados.stream()
+                    .filter(usuario -> usuario.getRoles().stream()
+                            .anyMatch(rol -> rol.getName().equalsIgnoreCase("USER")))
+                    .map(UserEntity::getEmail)
+                    .findFirst();
+
+            emailService.sendEmail(
+                    correoUsuario.get(),
+                    "SAFEZONE: ACTUALIZACIÓN DE DENUNCIA",
+                    "Le informamos que ya se solicitó una sesión psicológica para su denuncia."
+            );
 
             return new ResponseEntity<>(nuevaSesion, HttpStatus.CREATED);
 
