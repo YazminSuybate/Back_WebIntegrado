@@ -11,4 +11,6 @@ public interface SesionPsicologicaService {
     Optional<SesionPsicologica> obtenerSesionPorId(Long id);
     void eliminarSesion(Long id);
     List<SesionPsicologica> obtenerSesionesPorEstado(String estado);
+    List<SesionPsicologica> obtenerSesionesPorDenunciaIdYEstado(Long denunciaId, String estado);
+
 }

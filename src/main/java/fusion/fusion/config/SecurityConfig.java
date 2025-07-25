@@ -40,7 +40,11 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/send-reset-otp", "/reset-password", "/logout","/api/seguimientos-asesoria/**","/api/**")
+                        .requestMatchers("/login", "/register", "/send-reset-otp", "/reset-password", "/logout","/api/seguimientos-asesoria/**","/api/**", "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/swagger-ui.html")
                         .permitAll()
                         // NUEVO: Ejemplos de rutas protegidas por roles
                         .requestMatchers("/admin/**").hasRole("ADMIN")

@@ -47,4 +47,14 @@ public class SesionPsicologicaServiceImpl implements SesionPsicologicaService {
     public List<SesionPsicologica> obtenerSesionesPorEstado(String estado) {
         return sesionPsicologicaRepository.findByEstado(estado);
     }
+
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SesionPsicologica> obtenerSesionesPorDenunciaIdYEstado(Long denunciaId, String estado) {
+        return sesionPsicologicaRepository.findByDenunciaIdAndEstado(denunciaId, estado);
+    }
+
+
 }

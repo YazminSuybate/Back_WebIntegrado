@@ -20,4 +20,7 @@ public interface SesionPsicologicaRepository extends JpaRepository<SesionPsicolo
     // Buscar próximas sesiones
     List<SesionPsicologica> findByFechaSesionAfterAndEstadoOrderByFechaSesionAsc(LocalDateTime fecha, String estado);
 
+    List<SesionPsicologica> findByDenunciaIdAndEstado(Long denunciaId, String estado);
+
+
 }

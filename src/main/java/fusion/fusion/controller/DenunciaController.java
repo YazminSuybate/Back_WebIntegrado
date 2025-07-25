@@ -161,7 +161,7 @@ public ResponseEntity<?> asignarDenunciaAAbogado(
 
 
 //metodo que relaciona al psicologo con la denuncia hecha por un usuario
-@PostMapping("/asignarPsico/{denunciaId}/{correoAbogado}")
+@PostMapping("/asignarPsico/{denunciaId}/{correoPsicologo}")
     public ResponseEntity<?> asignarDenunciaAPsico(@PathVariable Long denunciaId, @PathVariable String correoPsicologo) {
 
         // 1. Obtener la denuncia
@@ -332,9 +332,60 @@ public ResponseEntity<?> asignarDenunciaAAbogado(
 
 
 
+    @GetMapping("/obtenerdenunciaPsicologo/{estado}")
+    public ResponseEntity<List<Denuncia>> obtenerDenunciasParaPsicologo(@PathVariable String estado) {
+        List<Denuncia> denuncias = denunciaService.obtenerDenunciasPorEstado(estado);
+        List<Denuncia> denunciasSinPsicologo = new ArrayList<>();
+
+        for (Denuncia denuncia : denuncias) {
+            List<DenunciaUsuario> relacionados = denunciaUsuarioService.obtenerUsuariosPorDenuncia(denuncia.getId());
+
+            boolean tienePsicologo = false;
+
+            for (DenunciaUsuario du : relacionados) {
+                UserEntity usuario = du.getUsuario();
+                List<String> roles = userService.obtenerRolesPorUsuarioId(usuario.getId());
+
+                if (roles.contains("PSYCHOLOGIST")) {
+                    tienePsicologo = true;
+                    break; // No necesitamos revisar más, ya tiene un psicólogo.
+                }
+            }
+
+            if (!tienePsicologo) {
+                denunciasSinPsicologo.add(denuncia);
+            }
+        }
+
+        return new ResponseEntity<>(denunciasSinPsicologo, HttpStatus.OK);
+    }
 
 
 
+
+
+//lista de denincuas asignadas a ese psicologo
+    @GetMapping("/psicologo/{correo}")
+    public ResponseEntity<?> obtenerDenunciasAsignadasPsicologo(@PathVariable String correo) {
+        Optional<UserEntity> psicologoOpt = userService.obtenerUsuarioPorEmail(correo);
+        if (psicologoOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Psicólogo no encontrado.");
+        }
+
+        UserEntity psicologo = psicologoOpt.get();
+
+        List<String> roles = userService.obtenerRolesPorUsuarioId(psicologo.getId());
+        if (!roles.contains("PSYCHOLOGIST")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario no tiene el rol de psicólogo.");
+        }
+
+        List<DenunciaUsuario> relaciones = denunciaUsuarioService.ObtenerDenunciaPorUsuario(psicologo.getId());
+        List<Denuncia> denunciasAsignadas = relaciones.stream()
+                .map(DenunciaUsuario::getDenuncia)
+                .toList();
+
+        return ResponseEntity.ok(denunciasAsignadas);
+    }
 
 
 

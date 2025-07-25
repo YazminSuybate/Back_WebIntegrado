@@ -114,6 +114,19 @@
         </dependency>
 
 
+
+        <!-- Dependencia para generar y mostrar la documentación de la API REST con Swagger UI -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.6.0</version>
+        </dependenc
+
+
+
+
+
+
     </dependencies>
 
     <build>
